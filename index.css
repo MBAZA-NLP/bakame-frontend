@@ -30,13 +30,20 @@
     text-align: center;
   }
 
-  .chatbot input {
+
+
+  .formSections{
+    display:flex;
+  }
+
+
+  .formSections .leftSection input {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
   }
-  .chatbot button {
+  .formSections .rightSection button {
     width: 100%;
     background-color: #4CAF50;
     color: white;

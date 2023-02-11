@@ -42,6 +42,8 @@
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
+     border: 1px gray;
+    border-style: none none  solid none;
   }
   .formSections .rightSection button {
     width: 100%;
@@ -52,5 +54,6 @@
     border: none;
     cursor: pointer;
   }
+
 
   

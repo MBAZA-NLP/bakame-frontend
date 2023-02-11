@@ -37,6 +37,21 @@
   .formSections{
     display:flex;
   }
+  .formSections .leftSection{
+    padding: 15px 30px 5px 25px;
+    width: 240px;
+  }
+  .formSections .rightSection{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .formSections .leftSection .chatbotTitle{
+    font-size: 18px;
+    font-family: arial;
+    font-weight: medium;
+    margin-bottom: 20px;
+  }
 
 
   .formSections .leftSection input {
@@ -46,18 +61,21 @@
     box-sizing: border-box;
      border: 1px gray;
     border-style: none none  solid none;
+    padding-left:2px;
+    margin-top: 30px;
+    outline: none;
   }
   .formSections .rightSection button {
-    width: 100%;
     background-color: #F59221;
     color: white;
-    padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
     border-radius: 50%;
-    height: 100%;
-    width: 100%;
+  }
+  .formSections .rightSection button img{
+    padding: 16px 16px;
+    width: 20px;
   }
 
 

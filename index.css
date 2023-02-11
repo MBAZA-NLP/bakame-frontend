@@ -1,0 +1,49 @@
+.mainContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+.mainContainer h2{
+    display: block;
+    margin: auto;
+    font-size: 50px;
+    color: rgb(90, 166, 248);
+
+}
+
+.chatbot {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom:  20px;
+    margin-right: 20px;
+  }
+  /* set some basic styles for the div */
+  .chatbot {
+    padding: 10px;
+    background-color: #ffc5c5;
+    border-radius: 10px;
+  }
+  /* center the text inside the div */
+  .chatbot p {
+    text-align: center;
+  }
+
+  .chatbot input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
+  .chatbot button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+  }
+
+  

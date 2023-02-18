@@ -14,20 +14,52 @@
 
     <div class="chatbot">
         <form>
-            <div class="formSections">
-                <div class="leftSection">
-                    <label class="chatbotTitle" for="input">Saba form ushaka</label>
+            <div id="bakame" class="bakame">
+                <div class="title">
+                    <div class="header"> 
+                        <label> Bakame Chatbot</label>
+                    </div>
+                    <hr style="color:#BCBCBC">
+                </div>
 
-                    <input type="text" placeholder="Andika  hano umbaze..">
+                <div class="content">
+                    <div class="initialText">
+                        <label for="">Wabasha gusaba serivisi <br/>
+                            yo gutwara ibinyabiziga</label>
+                       
+                    </div>
                 </div>
+
+            </div>
+            <div class="formSections" >
+                
+                <div class="leftSection">
+                    <label  id="bakameSaba" class="chatbotTitle" for="input">Saba form ushaka</label>
+
+                    <input  id="bakameType" type="text" placeholder="Andika  hano umbaze..">
+
+                    <div class="bakameRecording" id="bakameRecording">
+                        <div class="bakameCounter">
+                            <label id="timerLabel">0:00</label>
+                        </div>
+                        <button id="bakameCancel" ><img src="./images/cancel.svg"></button>
+                        <button id="bakamePause" ><img src="./images/pause.svg"></button>
+                        <button id="bakameAudio"><img src="./images/send.svg"></button>
+                    </div>
+                </div>
+
                 <div class="rightSection">
-                    <button type="submit"><img src="./images/mic.svg"></button>
+                    <button id="bakameMic" type="submit"><img src="./images/mic.svg"></button>
+                    <button id="bakameSend" type="submit"><img src="./images/send.svg"></button>
+                    
                 </div>
+
+                
                 
             </div>
            
         </form>
     </div>
-
+    <script src="./index.js"></script>
 </body>
 </html>

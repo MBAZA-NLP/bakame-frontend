@@ -12,6 +12,10 @@ const bakamePause = document.querySelector("#bakamePause");
 const bakameAudio = document.querySelector("#bakameAudio");
 
 const timerLabel = document.getElementById("timerLabel");
+const content = document.querySelector(".content");
+const initialContent = document.querySelector('.initialText');
+const chatContent = document.querySelector('.chatTextContent');
+const chatResponse = document.querySelector('.chatTextResponse');
 
 
 const bakameClean = () =>{
@@ -96,7 +100,18 @@ bakameMic.addEventListener("click", (event) =>{
 
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
-    console.log("Send clicked");
+    initialContent.style['display'] = 'none';
+    chatContent.innerHTML += `
+    <p class="questionsContent">
+        ${bakameType.value}
+    </p>`;
+    chatResponse.innerHTML += `
+    <p class="questionsContent">
+    Thanks for question, in second i will provide a response
+    </p>
+    `;
+    bakameType.value = "";
+
 });
 
 bakameMic.addEventListener("click", (event)=>{

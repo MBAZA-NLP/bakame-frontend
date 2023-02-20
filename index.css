@@ -78,5 +78,18 @@
     width: 20px;
   }
 
+  .responsesSection {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-start; */
+    gap: .5rem;
+  }
 
-  
+  .responsesSection .questions {
+    justify-self: flex-end;
+  }
+
+  .responsesSection .answers {
+    justify-self: flex-start;
+    background: #aaaaaa;
+  }

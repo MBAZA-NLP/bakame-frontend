@@ -36,6 +36,7 @@
 
   .formSections{
     display:flex;
+    /* border: 1px solid red; */
   }
   .formSections .leftSection{
     padding: 15px 30px 5px 25px;
@@ -92,4 +93,61 @@
   .responsesSection .answers {
     justify-self: flex-start;
     background: #aaaaaa;
+  }
+  .chatbot .bakame .title{
+    display: block;
+    margin: auto;
+    width: 90%;
+    /* border: 1px solid red; */
+  }
+  .chatbot .bakame{
+    display: block;
+    /* border: 1px solid blue; */
+  }
+  .chatbot .bakame .header{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    padding: 10px 0px;
+    /* border-bottom: 1px solid #BCBCBC; */
+    
+  }
+  .chatbot .bakame .content{
+    /* border: 1px solid green; */
+    height: 300px;
+
+  }
+  .chatbot .bakame .content .initialText{
+    width: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .chatbot .bakame .content .initialText label{
+    color: #BCBCBC; 
+  }
+  
+  .bakameRecording {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .bakameRecording .bakameCounter{
+    padding: 5px 30px;
+    background: #D9D9D9;
+    color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .bakameRecording #bakameCancel, .bakameRecording #bakamePause, .bakameRecording #bakameAudio{
+    border-radius: 50%;
+    border: 1px solid black;
+    padding:10px;
+  }
+
+  .bakameRecording #bakameAudio{
+    background: #F59221;
+    border: none;
   }

@@ -62,7 +62,23 @@ const foldDown = () =>{
 
 
 
+const regexInputValidataion = (input) =>{
+    let regexB = /^(?:\b[^\W\d_aeiou]{17,}\b|\b[^\W\d_aeiou]+\b(?=\W|$))/gi
+    const isMatch = regexB.test(input);
+    
+    console.log(isMatch); 
+    console.log(input.length);
 
+}
+
+// in any given sentence it should check and match only
+// if it is a sentence made up of 1 word and composed of more than 16 characters
+// or if in the whole sentence there's no any vowel, or words of that sentence has no vowels
+// otherwise it should return false
+
+// catch the whole input and match if it is only made of consonants, 
+// if it is more than 16 characters long in 1 word 
+// if it is 
 
 // Event listeners
 
@@ -100,6 +116,7 @@ bakameMic.addEventListener("click", (event) =>{
 
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
+    regexInputValidataion(bakameType.value);
     initialContent.style['display'] = 'none';
     chatContent.innerHTML += `
     <p class="questionsContent">

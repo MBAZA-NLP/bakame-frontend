@@ -13,53 +13,74 @@ const bakameAudio = document.querySelector("#bakameAudio");
 
 const timerLabel = document.getElementById("timerLabel");
 const content = document.querySelector(".content");
-const initialContent = document.querySelector('.initialText');
-const chatContent = document.querySelector('.chatTextContent');
-const chatResponse = document.querySelector('.chatTextResponse');
+const initialContent = document.querySelector(".initialText");
+const chatContent = document.querySelector(".chatTextContent");
+const chatResponse = document.querySelector(".chatTextResponse");
+var recorder = null;
+
+const bakameClean = () => {
+  bakame.style["display"] = "none";
+  bakameSend.style["display"] = "none";
+  bakameRecording.style["display"] = "none";
+};
 
 
-const bakameClean = () =>{
-    bakame.style["display"] = "none";
-    bakameSend.style["display"] = "none";
-    bakameRecording.style['display'] = "none";
+const recordAudio = () =>
+new Promise(async (resolve) => {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const mediaRecorder = new MediaRecorder(stream);
+  const audioChunks = [];
+
+  mediaRecorder.addEventListener("dataavailable", (event) => {
+    audioChunks.push(event.data);
+  });
+
+  const start = () => mediaRecorder.start();
+
+  const stop = () =>
+    new Promise((resolve) => {
+      mediaRecorder.addEventListener("stop", () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        const play = () => audio.play();
+        resolve({ audioBlob, audioUrl, play });
+      });
+      mediaRecorder.stop();
+    });
+  resolve({ start, stop });
+});
+
+const stopRecoder = async() =>{
+    const audio = await recorder.stop();
+    audio.play();
+    console.log(audio);
 }
 
-const bakameRecordCount = () =>{
-    let startTime = new Date().getTime();
+const bakameRecordCount = async () => {
+  let startTime = new Date().getTime();
+  (async () => {
+    recorder = await recordAudio();
+    recorder.start();
+  })();
 
-    setInterval(function() {
-    const currentTime = new Date().getTime();
-    const timeDiff = currentTime - startTime;
+  setInterval(function() {
+  const currentTime = new Date().getTime();
+  const timeDiff = currentTime - startTime;
+  
+  // Calculate minutes and seconds from time difference
+  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-    // Calculate minutes and seconds from time difference
-    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+  // Add leading zero to seconds if necessary
+  const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
 
-    // Add leading zero to seconds if necessary
-    const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
-
-    // Update the timer label
-    timerLabel.textContent = `${minutes}:${formattedSeconds}`;
-    }, 1000);
-}
-
+  // Update the timer label
+  timerLabel.textContent = `${minutes}:${formattedSeconds}`;
+  }, 1000);
+};
 
 bakameClean();
-
-
-
-const foldUp = () =>{
-    console.log("foldUp");
-    bakame.style["display"] = "block";
-    bakameSaba.style["display"] = "none";
-
-}
-const foldDown = () =>{
-    console.log("foldDown");
-    bakame.style["display"] = "none";
-    bakameSaba.style["display"] = "block";
-}
-
 
 
 const regexInputValidataion = (input) =>{
@@ -79,40 +100,43 @@ const regexInputValidataion = (input) =>{
 // catch the whole input and match if it is only made of consonants, 
 // if it is more than 16 characters long in 1 word 
 // if it is 
+const foldUp = () => {
+  console.log("foldUp");
+  bakame.style["display"] = "block";
+  bakameSaba.style["display"] = "none";
+};
+const foldDown = () => {
+  console.log("foldDown");
+  bakame.style["display"] = "none";
+  bakameSaba.style["display"] = "block";
+};
 
 // Event listeners
 
-
-bakameType.addEventListener("focus", ()=>{
-    console.log("input focused");
-    foldUp();
+bakameType.addEventListener("focus", () => {
+  console.log("input focused");
+  foldUp();
 });
 
-
-bakameType.addEventListener("input", ()=>{
-    if(bakameType.value === ""){
-        bakameMic.style["display"] = "block";
-        bakameSend.style["display"] = "none";
-    }
-    if(bakameType.value !== ""){
-        bakameMic.style["display"] = "none";
-        bakameSend.style["display"] = "block";
-    }
-});
-
-
-bakameMic.addEventListener("click", (event) =>{
-    event.preventDefault();
-    foldUp();
+bakameType.addEventListener("input", () => {
+  if (bakameType.value === "") {
+    bakameMic.style["display"] = "block";
+    bakameSend.style["display"] = "none";
+  }
+  if (bakameType.value !== "") {
     bakameMic.style["display"] = "none";
-    bakameSaba.style["display"] = "none";
-    bakameType.style["display"] = "none";
-    bakameRecording.style["display"] = "flex";
-    
-})
+    bakameSend.style["display"] = "block";
+  }
+});
 
-
-
+bakameMic.addEventListener("click", (event) => {
+  event.preventDefault();
+  foldUp();
+  bakameMic.style["display"] = "none";
+  bakameSaba.style["display"] = "none";
+  bakameType.style["display"] = "none";
+  bakameRecording.style["display"] = "flex";
+});
 
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
@@ -122,28 +146,27 @@ bakameSend.addEventListener("click", (event)=>{
     <p class="questionsContent">
         ${bakameType.value}
     </p>`;
-    chatResponse.innerHTML += `
+  chatResponse.innerHTML += `
     <p class="questionsContent">
     Thanks for question, in second i will provide a response
     </p>
     `;
-    bakameType.value = "";
-
+  bakameType.value = "";
 });
 
-bakameMic.addEventListener("click", (event)=>{
-    event.preventDefault();
-    console.log("Mic clicked");
-    bakameRecordCount();
+bakameMic.addEventListener("click", (event) => {
+  event.preventDefault();
+  console.log("Mic clicked");
+  bakameRecordCount();
 });
 
-bakameCancel.addEventListener("click", (event) =>{
-    event.preventDefault();
-    console.log("cancel clicked");
-    foldUp();
-    bakameMic.style["display"] = "block";
-    bakameSaba.style["display"] = "none";
-    bakameType.style["display"] = "block";
-    bakameRecording.style["display"] = "none";
+bakameCancel.addEventListener("click", (event) => {
+  event.preventDefault();
+  console.log("cancel clicked");
+  foldUp();
+  bakameMic.style["display"] = "block";
+  bakameSaba.style["display"] = "none";
+  bakameType.style["display"] = "block";
+  bakameRecording.style["display"] = "none";
+  stopRecoder();
 });
-

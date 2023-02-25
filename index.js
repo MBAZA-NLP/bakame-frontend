@@ -95,9 +95,6 @@ bakameMic.addEventListener("click", (event) =>{
     
 })
 
-
-
-
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
     initialContent.style['display'] = 'none';
@@ -107,12 +104,15 @@ bakameSend.addEventListener("click", (event)=>{
     </p>`;
     chatResponse.innerHTML += `
     <p class="questionsContent">
-    Thanks for question, in second i will provide a response
+        Thanks for question, in second i will provide a response
+        <span class="material-symbols-outlined">volume_up</span>
     </p>
     `;
     bakameType.value = "";
 
 });
+
+bakameType.
 
 bakameMic.addEventListener("click", (event)=>{
     event.preventDefault();

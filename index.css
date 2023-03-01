@@ -25,7 +25,7 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 1px 5px 1px  #BCBCBC;
-    width: 30%;
+    width: 25%;
 
   }
   /* center the text inside the div */
@@ -83,7 +83,6 @@
   .responsesSection {
     display: flex;
     flex-direction: column;
-    /* justify-content: flex-start; */
     gap: .5rem;
   }
 
@@ -99,25 +98,23 @@
     display: block;
     margin: auto;
     width: 90%;
-    /* border: 1px solid red; */
   }
   .chatbot .bakame{
     display: block;
-    /* border: 1px solid blue; */
   }
   .chatbot .bakame .header{
     display: flex;
     align-items:center;
     justify-content: center;
     padding: 10px 0px;
-    /* border-bottom: 1px solid #BCBCBC; */
     
   }
   .chatbot .bakame .content{
-    /* border: 1px solid green; */
     height: 300px;
-    width: inherit;
-    overflow: auto;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
 
   }
 
@@ -176,9 +173,9 @@
   .chatTextResponse p 
   span.material-symbols-outlined {
     position: absolute;
-    right: .2rem;
-    bottom: .2rem;
-    font-size: .8rem;
+    right: .4rem;
+    bottom: .4rem;
+    font-size: .99rem;
     color: #333;
   }
 
@@ -207,7 +204,9 @@
     align-items: center;
     justify-content: center;
   }
-  .bakameRecording #bakameCancel, .bakameRecording #bakamePause, .bakameRecording #bakameAudio{
+  .bakameRecording #bakameCancel, 
+  .bakameRecording #bakamePause, 
+  .bakameRecording #bakameAudio{
     border-radius: 50%;
     border: 1px solid black;
     padding:10px;
@@ -217,3 +216,57 @@
     background: #F59221;
     border: none;
   }
+
+.questionsContent p{
+  order: 1;
+}
+
+.typing {
+  position: relative;
+  display: none;
+  color: green;
+  margin-right: 1rem;
+  width: 50%;
+  width: 50px;
+  order: 2;
+}
+
+
+.typing span {
+  content: '';
+  animation: blink 2s infinite;
+  animation-fill-mode: both;
+  height: 10px;
+  width: 10px;
+  background: #f9a749;
+  position: absolute;
+  left:0;
+  top:0;
+  border-radius: 50%;
+}
+
+.typing span:nth-child(1) {
+  animation-delay: 1s;
+  margin-left:1rem;
+}
+  
+.typing span:nth-child(2) {
+  animation-delay: .2s;
+  margin-left:1rem;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: .4s;
+  margin-left: 2rem;
+}
+@keyframes blink {
+  0% {
+    opacity: .1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .1;
+  }
+}

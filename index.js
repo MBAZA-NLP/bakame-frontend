@@ -16,6 +16,8 @@ const content = document.querySelector(".content");
 const initialContent = document.querySelector('.initialText');
 const chatContent = document.querySelector('.chatTextContent');
 const chatResponse = document.querySelector('.chatTextResponse');
+const typing = document.querySelector('.typing');
+const initialText = document.querySelector('.initialText');
 
 
 const bakameClean = () =>{
@@ -109,20 +111,29 @@ bakameSend.addEventListener("click", (event)=>{
     </p>
     `;
     bakameType.value = "";
-
+    typing.style['display'] = "none";
 });
 
-bakameType.
+// bakameType.addEventListener("focus", () =>{
+//     initialText.style['display'] = "none";
+// });
+
+bakameType.addEventListener("focusin", (e) =>{
+    typing.style['display'] = "block";
+    initialText.style['display'] = "none";
+});
+
+// bakameType.addEventListener("focusout", (e) =>{
+//     typing.style['display'] = "none";
+// });
 
 bakameMic.addEventListener("click", (event)=>{
     event.preventDefault();
-    console.log("Mic clicked");
     bakameRecordCount();
 });
 
 bakameCancel.addEventListener("click", (event) =>{
     event.preventDefault();
-    console.log("cancel clicked");
     foldUp();
     bakameMic.style["display"] = "block";
     bakameSaba.style["display"] = "none";

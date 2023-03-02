@@ -68,13 +68,6 @@ const foldDown = () =>{
 
 // Event listeners
 
-
-bakameType.addEventListener("focus", ()=>{
-    console.log("input focused");
-    foldUp();
-});
-
-
 bakameType.addEventListener("input", ()=>{
     if(bakameType.value === ""){
         bakameMic.style["display"] = "block";
@@ -100,32 +93,35 @@ bakameMic.addEventListener("click", (event) =>{
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
     initialContent.style['display'] = 'none';
-    chatContent.innerHTML += `
-    <p class="questionsContent">
-        ${bakameType.value}
-    </p>`;
-    chatResponse.innerHTML += `
+    content.innerHTML += `
+    <div class="chatTextContent">
+        <p class="questionsContent">
+            ${bakameType.value}
+        </p>
+    </div>
+    `;
+    content.innerHTML += `
+    <div class="chatTextResponse">
     <p class="questionsContent">
         Thanks for question, in second i will provide a response
         <span class="material-symbols-outlined">volume_up</span>
     </p>
+</div>
     `;
     bakameType.value = "";
-    typing.style['display'] = "none";
 });
 
-// bakameType.addEventListener("focus", () =>{
-//     initialText.style['display'] = "none";
-// });
-
-bakameType.addEventListener("focusin", (e) =>{
-    typing.style['display'] = "block";
-    initialText.style['display'] = "none";
+bakameType.addEventListener("blur", ()=>{
+    console.log("input focused out");
+    foldUp();
+    typing.style["display"] = "none";
 });
 
-// bakameType.addEventListener("focusout", (e) =>{
-//     typing.style['display'] = "none";
-// });
+bakameType.addEventListener("focus", ()=>{
+    console.log("input focused");
+    foldUp();
+    typing.style["display"] = "block";
+});
 
 bakameMic.addEventListener("click", (event)=>{
     event.preventDefault();

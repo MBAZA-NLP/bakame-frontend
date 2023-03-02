@@ -37,22 +37,25 @@
 
   .formSections{
     display:flex;
-    /* border: 1px solid red; */
+    position: relative;
   }
   .formSections .leftSection{
-    padding: 15px 30px 5px 25px;
-    width: 240px;
+    padding: 15px 30px 5px 0px;
+    width: 100%;
+
   }
   .formSections .rightSection{
     display: flex;
     justify-content: center;
     align-items: flex-end;
+
   }
   .formSections .leftSection .chatbotTitle{
     font-size: 18px;
     font-family: arial;
     font-weight: medium;
     margin-bottom: 20px;
+
   }
 
 
@@ -76,8 +79,8 @@
     border-radius: 50%;
   }
   .formSections .rightSection button img{
-    padding: 16px 16px;
-    width: 20px;
+    padding: 10px 10px;
+    width: 14px;
   }
 
   .responsesSection {
@@ -114,8 +117,6 @@
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-
-
   }
 
 .content::-webkit-scrollbar-track
@@ -222,15 +223,12 @@
 }
 
 .typing {
-  position: relative;
-  display: none;
+  position: fixed;
+  right: 6%;
   color: green;
-  margin-right: 1rem;
-  width: 50%;
-  width: 50px;
-  order: 2;
+  margin-top: 1rem;
+  display: none;
 }
-
 
 .typing span {
   content: '';
@@ -269,4 +267,12 @@
   100% {
     opacity: .1;
   }
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
 }

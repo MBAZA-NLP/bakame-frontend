@@ -13,58 +13,104 @@ const bakameAudio = document.querySelector("#bakameAudio");
 
 const timerLabel = document.getElementById("timerLabel");
 const content = document.querySelector(".content");
-const initialContent = document.querySelector('.initialText');
-const chatContent = document.querySelector('.chatTextContent');
-const chatResponse = document.querySelector('.chatTextResponse');
-const typing = document.querySelector('.typing');
-const initialText = document.querySelector('.initialText');
+const initialContent = document.querySelector(".initialText");
+const chatContent = document.querySelector(".chatTextContent");
+const chatResponse = document.querySelector(".chatTextResponse");
+const typing = document.querySelector(".typing");
+var recorder = null;
+
+const bakameClean = () => {
+  bakame.style["display"] = "none";
+  bakameSend.style["display"] = "none";
+  bakameRecording.style["display"] = "none";
+};
 
 
-const bakameClean = () =>{
-    bakame.style["display"] = "none";
-    bakameSend.style["display"] = "none";
-    bakameRecording.style['display'] = "none";
+const recordAudio = () =>
+new Promise(async (resolve) => {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const mediaRecorder = new MediaRecorder(stream);
+  const audioChunks = [];
+
+  mediaRecorder.addEventListener("dataavailable", (event) => {
+    audioChunks.push(event.data);
+  });
+
+  const start = () => mediaRecorder.start();
+
+  const stop = () =>
+    new Promise((resolve) => {
+      mediaRecorder.addEventListener("stop", () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        const play = () => audio.play();
+        resolve({ audioBlob, audioUrl, play });
+      });
+      mediaRecorder.stop();
+    });
+  resolve({ start, stop });
+});
+
+const stopRecoder = async() =>{
+    const audio = await recorder.stop();
+    audio.play();
+    console.log(audio);
 }
 
-const bakameRecordCount = () =>{
-    let startTime = new Date().getTime();
+const bakameRecordCount = async () => {
+  let startTime = new Date().getTime();
+  (async () => {
+    recorder = await recordAudio();
+    recorder.start();
+  })();
 
-    setInterval(function() {
-    const currentTime = new Date().getTime();
-    const timeDiff = currentTime - startTime;
+  setInterval(function() {
+  const currentTime = new Date().getTime();
+  const timeDiff = currentTime - startTime;
+  
+  // Calculate minutes and seconds from time difference
+  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-    // Calculate minutes and seconds from time difference
-    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+  // Add leading zero to seconds if necessary
+  const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
 
-    // Add leading zero to seconds if necessary
-    const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
-
-    // Update the timer label
-    timerLabel.textContent = `${minutes}:${formattedSeconds}`;
-    }, 1000);
-}
-
+  // Update the timer label
+  timerLabel.textContent = `${minutes}:${formattedSeconds}`;
+  }, 1000);
+};
 
 bakameClean();
 
 
-
-const foldUp = () =>{
-    console.log("foldUp");
-    bakame.style["display"] = "block";
-    bakameSaba.style["display"] = "none";
+const regexInputValidataion = (input) =>{
+    let regexB = /^(?:\b[^\W\d_aeiou]{17,}\b|\b[^\W\d_aeiou]+\b(?=\W|$))/gi
+    const isMatch = regexB.test(input);
+    
+    console.log(isMatch); 
+    console.log(input.length);
 
 }
-const foldDown = () =>{
-    console.log("foldDown");
-    bakame.style["display"] = "none";
-    bakameSaba.style["display"] = "block";
-}
 
+// in any given sentence it should check and match only
+// if it is a sentence made up of 1 word and composed of more than 16 characters
+// or if in the whole sentence there's no any vowel, or words of that sentence has no vowels
+// otherwise it should return false
 
-
-
+// catch the whole input and match if it is only made of consonants, 
+// if it is more than 16 characters long in 1 word 
+// if it is 
+const foldUp = () => {
+  console.log("foldUp");
+  bakame.style["display"] = "block";
+  bakameSaba.style["display"] = "none";
+};
+const foldDown = () => {
+  console.log("foldDown");
+  bakame.style["display"] = "none";
+  bakameSaba.style["display"] = "block";
+};
 
 // Event listeners
 
@@ -92,6 +138,7 @@ bakameMic.addEventListener("click", (event) =>{
 
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
+    regexInputValidataion(bakameType.value);
     initialContent.style['display'] = 'none';
     content.innerHTML += `
     <div class="chatTextContent">
@@ -136,4 +183,3 @@ bakameCancel.addEventListener("click", (event) =>{
     bakameType.style["display"] = "block";
     bakameRecording.style["display"] = "none";
 });
-

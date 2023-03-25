@@ -17,12 +17,20 @@ const initialContent = document.querySelector(".initialText");
 const chatContent = document.querySelector(".chatTextContent");
 const chatResponse = document.querySelector(".chatTextResponse");
 var recorder = null;
+var timerCounter = null;
 
 const bakameClean = () => {
   bakame.style["display"] = "none";
   bakameSend.style["display"] = "none";
   bakameRecording.style["display"] = "none";
+  timerLabel.textContent = '';
 };
+
+const bakameCleanRecorder = () =>{
+  timerLabel.textContent = '';
+  clearInterval(timerCounter);
+
+}
 
 
 const recordAudio = () =>
@@ -55,6 +63,7 @@ const stopRecoder = async() =>{
     const audio = await recorder.stop();
     audio.play();
     console.log(audio);
+    timerLabel.textContent = '';
 }
 
 const bakameRecordCount = async () => {
@@ -64,7 +73,7 @@ const bakameRecordCount = async () => {
     recorder.start();
   })();
 
-  setInterval(function() {
+  timerCounter = setInterval(function() {
   const currentTime = new Date().getTime();
   const timeDiff = currentTime - startTime;
   
@@ -169,4 +178,10 @@ bakameCancel.addEventListener("click", (event) => {
   bakameType.style["display"] = "block";
   bakameRecording.style["display"] = "none";
   stopRecoder();
+  bakameCleanRecorder();
+});
+
+bakameAudio.addEventListener("click", (event) =>{
+  event.preventDefault();
+  bakameCleanRecorder();
 });

@@ -37,11 +37,12 @@
 
   .formSections{
     display:flex;
-    /* border: 1px solid red; */
+    justify-content: space-between;
   }
   .formSections .leftSection{
     padding: 15px 30px 5px 25px;
-    width: 240px;
+    min-width: 60%;
+    max-width: 100%;
   }
   .formSections .rightSection{
     display: flex;
@@ -190,19 +191,35 @@
   }
 
   .bakameRecording .bakameCounter{
-    padding: 5px 30px;
+    padding: 0px 30px;
     background: #D9D9D9;
     color: red;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* border: 1px solid red; */
+    padding-right: 90px;
+    padding-left: 90px;
+    border-radius: 10px;
   }
   .bakameRecording #bakameCancel, .bakameRecording #bakamePause, .bakameRecording #bakameAudio{
     border-radius: 50%;
     border: 1px solid black;
     padding:10px;
   }
-
+ .bakameRecording #bakameCancel{
+   padding:10px 15px;
+ }
+ .bakameRecording #bakamePause{
+   padding: 10px 12px;
+ }
+ .bakameRecording #bakameAudio img{
+   width: 20px;
+   height: auto;
+ }
+ .bakameRecording #bakameAudio{
+   padding: 10px 15px;
+ }
   .bakameRecording #bakameAudio{
     background: #F59221;
     border: none;

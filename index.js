@@ -1,5 +1,6 @@
 console.log("hello i'm Bakame, your guy");
 
+const chatbot= document.querySelector(".chatbot");
 const bakame = document.querySelector("#bakame");
 const bakameSaba = document.querySelector("#bakameSaba");
 const bakameType = document.querySelector("#bakameType");
@@ -16,6 +17,9 @@ const content = document.querySelector(".content");
 const initialContent = document.querySelector(".initialText");
 const chatContent = document.querySelector(".chatTextContent");
 const chatResponse = document.querySelector(".chatTextResponse");
+const bakameMobile = document.querySelector("#bakameMobile");
+const smallDev = document.querySelector(".smallDev");
+
 var recorder = null;
 var timerCounter = null;
 
@@ -184,4 +188,9 @@ bakameCancel.addEventListener("click", (event) => {
 bakameAudio.addEventListener("click", (event) =>{
   event.preventDefault();
   bakameCleanRecorder();
+});
+
+bakameMobile.addEventListener("click", ()=>{
+  chatbot.style["display"]="block";
+  smallDev.style["display"]="none";
 });

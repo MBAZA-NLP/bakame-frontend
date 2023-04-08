@@ -12,7 +12,7 @@
 
 }
 
-.chatbot {
+.chatbot,.smallDev {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -20,7 +20,7 @@
     margin-right: 20px;
   }
   /* set some basic styles for the div */
-  .chatbot {
+  .chatbot,.smallDev{
     padding: 10px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -223,4 +223,34 @@
   .bakameRecording #bakameAudio{
     background: #F59221;
     border: none;
+  }
+
+  @media screen and (min-width:900px){
+    .smallDev{
+      display:none;
+    }
+  }
+
+  @media screen and (max-width: 900px){
+    .chatbot{
+      display:none;
+    }
+
+    .smallDev{
+      display:block;
+      /* border: 1px solid red; */
+      width: 70px;
+      height: 70px;
+    }
+    #bakameMobile{
+      width: inherit;
+      height: inherit;
+      border: none;
+      background-color: transparent;
+      
+    }
+    #bakameMobile img{
+      width:inherit;
+      height: inherit;
+    }
   }

@@ -154,17 +154,12 @@ bakameMic.addEventListener("click", (event) => {
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
     regexInputValidataion(bakameType.value);
+
     initialContent.style['display'] = 'none';
-    chatContent.innerHTML += `
-    <p class="questionsContent">
-        ${bakameType.value}
-    </p>`;
-  chatResponse.innerHTML += `
-    <p class="questionsContent">
-    Thanks for question, in second i will provide a response
-    </p>
-    `;
+    
+  rasaApi(bakameType.value);
   bakameType.value = "";
+
 });
 
 bakameMic.addEventListener("click", (event) => {
@@ -194,3 +189,41 @@ bakameMobile.addEventListener("click", ()=>{
   chatbot.style["display"]="block";
   smallDev.style["display"]="none";
 });
+
+
+// calling the api
+
+const rasaApi = (query) =>{
+
+  let rasaURL = "http://64.226.97.252:5005/webhooks/rest/webhook";
+  let reqData = {
+    sender:"user101",
+    message:query
+  }
+  const sendRequest = async () =>{
+    const { data: res } = await axios.post(rasaURL, reqData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+
+  chatContent.innerHTML = `
+    <p class="questionsContent">
+        ${query}
+    </p>`;
+    allResponse = '';
+    res.map((response)=>{
+      allResponse += `
+      <p class="questionsContent">
+      ${response.text}
+      </p>`;
+    });
+
+  chatResponse.innerHTML = allResponse;
+    console.log("--->",res);
+  }
+
+  sendRequest();
+
+}

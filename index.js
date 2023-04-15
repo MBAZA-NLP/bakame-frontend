@@ -335,11 +335,27 @@ const createDiv = () =>{
 // it should create  the request div and its children included and return it
 
 const createDomRequestTree = (req)=>{
+  let chatTextContent = document.createElement('div');
+  chatTextContent.class = "chatTextContent"
+  const questionsContent= document.createElement("p");
+  questionsContent.class ="questionsContent";
+  questionsContent.innerHTML=req;
+  chatTextContent.appendChild(questionsContent);
 
+  return chatTextContent;
 }
+
 
 //this function will receive the response object
 // it should create the response div and its children included and return it
 const createDomResponseTree = (res)=>{
+  let chatTextResponse = document.createElement('div');
+  chatTextResponse.class= "chatTextResponse";
+  const questionsContent = document.createElement('p');
+  questionsContent.class ="questionsContent";
+  questionsContent.innerHTML=res;
+  chatTextResponse.appendChild(questionsContent);
+
+  return chatTextResponse;
 
 }

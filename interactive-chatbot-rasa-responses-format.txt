@@ -1,0 +1,37 @@
+message request:
+	{
+		"sender":"user",
+		"message":"mwaramutse"
+	}
+
+message responses:
+	[
+		{
+			"recipient_id":"user",
+			"text":"murakaza neza kuri Bakame"
+		},
+		{
+			"recipient_id":"user",
+			"image":"https://rtn.rw/wp-content/uploads/2019/07/irembo-300x83.png"
+		}
+	]
+
+buttons responses:
+	[
+		"recipient_id":"user",
+		"text":"murashaka gukora ku wuhe munsi",
+		"buttons":[
+			{
+				"title": "2023-01-23",
+				"payload": "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-01-23\"}"
+			},
+			{
+				"title": "2023-02-01",
+				"payload": "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-01\"}"
+			},
+			{
+				"title": "2023-02-15",
+				"payload": "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-15\"}"
+			}
+		]
+	]

@@ -234,7 +234,7 @@
   @media screen and (max-width: 900px){
     .chatbot{
       display:none;
-      height: 32%;
+      /* height: 32%; */
     }
 
     .smallDev{
@@ -257,22 +257,22 @@
   }
   @media screen and (max-width:700px){
     .chatbot{
-      display: block;
+      /* display: block; */
       width: 80%;
-      height: 32%;
+      /* height: 32%; */
     }
     .smallDev{
-      display:none;
+      display:block;
     }
   }
     @media screen and (max-width:800px){
       .chatbot{
-        display: block;
+        /* display: block; */
         width: 80%;
-        height: 32%;
+        /* height: 32%; */
       }
       .smallDev{
-      display:none;
+      display:block;
     }
   }
     /* @media screen and (max-width:400px){

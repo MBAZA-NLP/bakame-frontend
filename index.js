@@ -1,6 +1,6 @@
 console.log("hello i'm Bakame, your guy");
 
-const chatbot= document.querySelector(".chatbot");
+const chatbot = document.querySelector(".chatbot");
 const bakame = document.querySelector("#bakame");
 const bakameSaba = document.querySelector("#bakameSaba");
 const bakameType = document.querySelector("#bakameType");
@@ -22,6 +22,38 @@ const smallDev = document.querySelector(".smallDev");
 
 var recorder = null;
 var timerCounter = null;
+const mins10 = 600000;
+
+const userGenerator = () => {
+  return `user${Date.now()}`;
+}
+
+
+// user CRUD
+const setUser = () => {
+  let user = userGenerator();
+  window.localStorage.setItem("mbazaUser", user);
+}
+const deleteUser = () => {
+  window.localStorage.setItem("mbazaUser", "nouser");
+}
+const getUser = () => {
+  let user = window.localStorage.getItem("mbazaUser");
+  return user;
+}
+
+// default function to run 
+(() => {
+  setUser();
+  console.log("user", userGenerator());
+})();
+
+
+let wait10mins = window.setInterval(() => {
+  deleteUser();
+  setUser();
+  // console.log("user", userGenerator());
+}, mins10);
 
 const bakameClean = () => {
   bakame.style["display"] = "none";
@@ -30,7 +62,7 @@ const bakameClean = () => {
   timerLabel.textContent = '';
 };
 
-const bakameCleanRecorder = () =>{
+const bakameCleanRecorder = () => {
   timerLabel.textContent = '';
   clearInterval(timerCounter);
 
@@ -38,36 +70,36 @@ const bakameCleanRecorder = () =>{
 
 
 const recordAudio = () =>
-new Promise(async (resolve) => {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  const mediaRecorder = new MediaRecorder(stream);
-  const audioChunks = [];
+  new Promise(async (resolve) => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaRecorder = new MediaRecorder(stream);
+    const audioChunks = [];
 
-  mediaRecorder.addEventListener("dataavailable", (event) => {
-    audioChunks.push(event.data);
+    mediaRecorder.addEventListener("dataavailable", (event) => {
+      audioChunks.push(event.data);
+    });
+
+    const start = () => mediaRecorder.start();
+
+    const stop = () =>
+      new Promise((resolve) => {
+        mediaRecorder.addEventListener("stop", () => {
+          const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+          const play = () => audio.play();
+          resolve({ audioBlob, audioUrl, play });
+        });
+        mediaRecorder.stop();
+      });
+    resolve({ start, stop });
   });
 
-  const start = () => mediaRecorder.start();
-
-  const stop = () =>
-    new Promise((resolve) => {
-      mediaRecorder.addEventListener("stop", () => {
-        const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        const play = () => audio.play();
-        resolve({ audioBlob, audioUrl, play });
-      });
-      mediaRecorder.stop();
-    });
-  resolve({ start, stop });
-});
-
-const stopRecoder = async() =>{
-    const audio = await recorder.stop();
-    audio.play();
-    console.log(audio);
-    timerLabel.textContent = '';
+const stopRecoder = async () => {
+  const audio = await recorder.stop();
+  audio.play();
+  console.log(audio);
+  timerLabel.textContent = '';
 }
 
 const bakameRecordCount = async () => {
@@ -77,31 +109,31 @@ const bakameRecordCount = async () => {
     recorder.start();
   })();
 
-  timerCounter = setInterval(function() {
-  const currentTime = new Date().getTime();
-  const timeDiff = currentTime - startTime;
-  
-  // Calculate minutes and seconds from time difference
-  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+  timerCounter = setInterval(function () {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - startTime;
 
-  // Add leading zero to seconds if necessary
-  const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
+    // Calculate minutes and seconds from time difference
+    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-  // Update the timer label
-  timerLabel.textContent = `${minutes}:${formattedSeconds}`;
+    // Add leading zero to seconds if necessary
+    const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
+
+    // Update the timer label
+    timerLabel.textContent = `${minutes}:${formattedSeconds}`;
   }, 1000);
 };
 
 bakameClean();
 
 
-const regexInputValidataion = (input) =>{
-    let regexB = /^(?:\b[^\W\d_aeiou]{17,}\b|\b[^\W\d_aeiou]+\b(?=\W|$))/gi
-    const isMatch = regexB.test(input);
-    
-    console.log(isMatch); 
-    console.log(input.length);
+const regexInputValidataion = (input) => {
+  let regexB = /^(?:\b[^\W\d_aeiou]{17,}\b|\b[^\W\d_aeiou]+\b(?=\W|$))/gi
+  const isMatch = regexB.test(input);
+
+  console.log(isMatch);
+  console.log(input.length);
 
 }
 
@@ -142,6 +174,16 @@ bakameType.addEventListener("input", () => {
   }
 });
 
+bakameType.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    regexInputValidataion(bakameType.value);
+    console.log("Return key pressed!", bakameType.value);
+    rasaApi(bakameType.value);
+    bakameType.value = "";
+  }
+});
+
 bakameMic.addEventListener("click", (event) => {
   event.preventDefault();
   foldUp();
@@ -151,12 +193,12 @@ bakameMic.addEventListener("click", (event) => {
   bakameRecording.style["display"] = "flex";
 });
 
-bakameSend.addEventListener("click", (event)=>{
-    event.preventDefault();
-    regexInputValidataion(bakameType.value);
+bakameSend.addEventListener("click", (event) => {
+  event.preventDefault();
+  regexInputValidataion(bakameType.value);
 
-    initialContent.style['display'] = 'none';
-    
+  initialContent.style['display'] = 'none';
+
   rasaApi(bakameType.value);
   bakameType.value = "";
 
@@ -180,50 +222,123 @@ bakameCancel.addEventListener("click", (event) => {
   bakameCleanRecorder();
 });
 
-bakameAudio.addEventListener("click", (event) =>{
+bakameAudio.addEventListener("click", (event) => {
   event.preventDefault();
   bakameCleanRecorder();
 });
 
-bakameMobile.addEventListener("click", ()=>{
-  chatbot.style["display"]="block";
-  smallDev.style["display"]="none";
+bakameMobile.addEventListener("click", () => {
+  chatbot.style["display"] = "block";
+  smallDev.style["display"] = "none";
 });
 
 
 // calling the api
 
-const rasaApi = (query) =>{
+const rasaApi = (query) => {
 
   let rasaURL = "http://64.226.97.252:5005/webhooks/rest/webhook";
+  let user = getUser();
   let reqData = {
-    sender:"user101",
-    message:query
+    sender: user,
+    message: query
   }
-  const sendRequest = async () =>{
-    const { data: res } = await axios.post(rasaURL, reqData, {
-      headers: {
-        "Content-Type": "application/json",
+  const sendRequest = async () => {
+    // const { data: res } = await axios.post(rasaURL, reqData, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    res = [
+      {
+        recipient_id: "user",
+        text: "Murakaza neza kuri Bakame"
       },
-    });
+      {
+        recipient_id: "user",
+        image: "https://rtn.rw/wp-content/uploads/2019/07/irembo-300x83.png"
+      },
+      {
+        recipient_id: "user",
+        text: "murashaka gukora ku wuhe munsi",
+        buttons: [
+          {
+            title: "2023-01-23",
+            payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-01-23\"}"
+          },
+          {
+            title: "2023-02-01",
+            payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-01\"}"
+          },
+          {
+            title: "2023-02-15",
+            payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-15\"}"
+          }
+        ]
+      }
+    ]
 
 
-  chatContent.innerHTML = `
-    <p class="questionsContent">
-        ${query}
-    </p>`;
-    allResponse = '';
-    res.map((response)=>{
-      allResponse += `
+    chatContent.innerHTML = `
       <p class="questionsContent">
-      ${response.text}
+          ${query}
       </p>`;
+
+
+    //responses
+    allResponse = '';
+    let div = createDiv(); // this div will hold the buttons
+
+    res.map((response) => {
+
+      let text = response.text || "";
+      // let image = response.image || "";
+      let buttons = response.buttons || [];
+
+      buttons.length && buttons.map((btn) => {
+        let button = document.createElement('button');
+        button.class="BakameBtn";
+        button.payload=btn.payload;
+        //onclick the button should call a function to send another req with the payload provided
+        button.innerHTML = btn.title;
+        div.appendChild(button);
+      });
+      //append the button's div into the response div
+
+      allResponse += `
+        <p class="questionsContent">
+        ${response.text}
+        </p>`;
+      //on the above allResponse, instead it should be a content,
+      // which will append the children in chronological order
+      //both for the request then the response
     });
 
-  chatResponse.innerHTML = allResponse;
-    console.log("--->",res);
+    chatResponse.innerHTML = allResponse;
+    // after all, no more of chatResponse or allResponse
+    // then build a function to handle when a user clicks on a button
+    console.log("--->", res);
   }
+
 
   sendRequest();
+
+}
+
+const createDiv = () =>{
+  let div = document.createElement('div');
+  return div;
+}
+
+// this function will receive the request data
+// it should create  the request div and its children included and return it
+
+const createDomRequestTree = (req)=>{
+
+}
+
+//this function will receive the response object
+// it should create the response div and its children included and return it
+const createDomResponseTree = (res)=>{
 
 }

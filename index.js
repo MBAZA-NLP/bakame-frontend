@@ -179,6 +179,7 @@ bakameType.addEventListener("keydown", (event) => {
     event.preventDefault();
     regexInputValidataion(bakameType.value);
     console.log("Return key pressed!", bakameType.value);
+    initialContent.style['display'] = 'none';
     rasaApi(bakameType.value);
     bakameType.value = "";
   }

@@ -25,7 +25,7 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 1px 5px 1px  #BCBCBC;
-    width: 30%;
+    width: 25%;
 
   }
   /* center the text inside the div */
@@ -37,6 +37,11 @@
 
   .formSections{
     display:flex;
+    position: relative;
+  }
+  .formSections .leftSection{
+    padding: 15px 30px 5px 0px;
+    width: 100%;
     justify-content: space-between;
   }
   .formSections .leftSection{
@@ -48,12 +53,14 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
+
   }
   .formSections .leftSection .chatbotTitle{
     font-size: 18px;
     font-family: arial;
     font-weight: medium;
     margin-bottom: 20px;
+
   }
 
 
@@ -77,14 +84,13 @@
     border-radius: 50%;
   }
   .formSections .rightSection button img{
-    padding: 16px 16px;
-    width: 20px;
+    padding: 10px 10px;
+    width: 14px;
   }
 
   .responsesSection {
     display: flex;
     flex-direction: column;
-    /* justify-content: flex-start; */
     gap: .5rem;
   }
 
@@ -100,26 +106,22 @@
     display: block;
     margin: auto;
     width: 90%;
-    /* border: 1px solid red; */
   }
   .chatbot .bakame{
     display: block;
-    /* border: 1px solid blue; */
   }
   .chatbot .bakame .header{
     display: flex;
     align-items:center;
     justify-content: center;
     padding: 10px 0px;
-    /* border-bottom: 1px solid #BCBCBC; */
     
   }
   .chatbot .bakame .content{
-    /* border: 1px solid green; */
     height: 300px;
-    width: inherit;
-    overflow: auto;
-
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
 .content::-webkit-scrollbar-track
@@ -166,11 +168,21 @@
   .chatTextResponse p{
     width: 50%;
     margin-left: 1rem;
-    border-radius: .8rem;
+    border-radius: .4rem;
     padding: .5rem;
     text-align: left;
     font-size: .8rem;
     background-color:  #f9a749;
+    position: relative;
+  }
+
+  .chatTextResponse p 
+  span.material-symbols-outlined {
+    position: absolute;
+    right: .4rem;
+    bottom: .4rem;
+    font-size: .99rem;
+    color: #333;
   }
 
 
@@ -202,7 +214,9 @@
     padding-left: 90px;
     border-radius: 10px;
   }
-  .bakameRecording #bakameCancel, .bakameRecording #bakamePause, .bakameRecording #bakameAudio{
+  .bakameRecording #bakameCancel, 
+  .bakameRecording #bakamePause, 
+  .bakameRecording #bakameAudio{
     border-radius: 50%;
     border: 1px solid black;
     padding:10px;
@@ -225,6 +239,64 @@
     border: none;
   }
 
+.questionsContent p{
+  order: 1;
+}
+
+.typing {
+  position: fixed;
+  right: 6%;
+  color: green;
+  margin-top: 1rem;
+  display: none;
+}
+
+.typing span {
+  content: '';
+  animation: blink 2s infinite;
+  animation-fill-mode: both;
+  height: 10px;
+  width: 10px;
+  background: #f9a749;
+  position: absolute;
+  left:0;
+  top:0;
+  border-radius: 50%;
+}
+
+.typing span:nth-child(1) {
+  animation-delay: 1s;
+  margin-left:1rem;
+}
+  
+.typing span:nth-child(2) {
+  animation-delay: .2s;
+  margin-left:1rem;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: .4s;
+  margin-left: 2rem;
+}
+@keyframes blink {
+  0% {
+    opacity: .1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .1;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
   @media screen and (min-width:900px){
     .smallDev{
       display:none;

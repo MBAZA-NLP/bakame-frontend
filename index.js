@@ -17,9 +17,9 @@ const content = document.querySelector(".content");
 const initialContent = document.querySelector(".initialText");
 const chatContent = document.querySelector(".chatTextContent");
 const chatResponse = document.querySelector(".chatTextResponse");
+const typing = document.querySelector(".typing");
 const bakameMobile = document.querySelector("#bakameMobile");
 const smallDev = document.querySelector(".smallDev");
-
 var recorder = null;
 var timerCounter = null;
 
@@ -126,48 +126,68 @@ const foldDown = () => {
 
 // Event listeners
 
-bakameType.addEventListener("focus", () => {
-  console.log("input focused");
-  foldUp();
+bakameType.addEventListener("input", ()=>{
+    if(bakameType.value === ""){
+        bakameMic.style["display"] = "block";
+        bakameSend.style["display"] = "none";
+    }
+    if(bakameType.value !== ""){
+        bakameMic.style["display"] = "none";
+        bakameSend.style["display"] = "block";
+    }
 });
 
-bakameType.addEventListener("input", () => {
-  if (bakameType.value === "") {
-    bakameMic.style["display"] = "block";
-    bakameSend.style["display"] = "none";
-  }
-  if (bakameType.value !== "") {
+
+bakameMic.addEventListener("click", (event) =>{
+    event.preventDefault();
+    foldUp();
     bakameMic.style["display"] = "none";
-    bakameSend.style["display"] = "block";
-  }
-});
-
-bakameMic.addEventListener("click", (event) => {
-  event.preventDefault();
-  foldUp();
-  bakameMic.style["display"] = "none";
-  bakameSaba.style["display"] = "none";
-  bakameType.style["display"] = "none";
-  bakameRecording.style["display"] = "flex";
-});
+    bakameSaba.style["display"] = "none";
+    bakameType.style["display"] = "none";
+    bakameRecording.style["display"] = "flex";
+    
+})
 
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
     regexInputValidataion(bakameType.value);
 
     initialContent.style['display'] = 'none';
-    
+    content.innerHTML += `
+    <div class="chatTextContent">
+        <p class="questionsContent">
+            ${bakameType.value}
+        </p>
+    </div>
+    `;
+    content.innerHTML += `
+    <div class="chatTextResponse">
+    <p class="questionsContent">
+        Thanks for question, in second i will provide a response
+        <span class="material-symbols-outlined">volume_up</span>
+    </p>
+</div>
+    `;
+    bakameType.value = "";
   rasaApi(bakameType.value);
   bakameType.value = "";
-
 });
 
-bakameMic.addEventListener("click", (event) => {
-  event.preventDefault();
-  console.log("Mic clicked");
-  bakameRecordCount();
+bakameType.addEventListener("blur", ()=>{
+    console.log("input focused out");
+    foldUp();
+    typing.style["display"] = "none";
+});
+bakameType.addEventListener("focus", ()=>{
+    console.log("input focused");
+    foldUp();
+    typing.style["display"] = "block";
 });
 
+bakameMic.addEventListener("click", (event)=>{
+    event.preventDefault();
+    bakameRecordCount();
+});
 bakameCancel.addEventListener("click", (event) => {
   event.preventDefault();
   console.log("cancel clicked");

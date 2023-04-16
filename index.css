@@ -12,7 +12,7 @@
 
 }
 
-.chatbot {
+.chatbot,.smallDev {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -20,7 +20,7 @@
     margin-right: 20px;
   }
   /* set some basic styles for the div */
-  .chatbot {
+  .chatbot,.smallDev{
     padding: 10px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -42,7 +42,12 @@
   .formSections .leftSection{
     padding: 15px 30px 5px 0px;
     width: 100%;
-
+    justify-content: space-between;
+  }
+  .formSections .leftSection{
+    padding: 15px 30px 5px 25px;
+    min-width: 60%;
+    max-width: 100%;
   }
   .formSections .rightSection{
     display: flex;
@@ -198,12 +203,16 @@
   }
 
   .bakameRecording .bakameCounter{
-    padding: 5px 30px;
+    padding: 0px 30px;
     background: #D9D9D9;
     color: red;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* border: 1px solid red; */
+    padding-right: 90px;
+    padding-left: 90px;
+    border-radius: 10px;
   }
   .bakameRecording #bakameCancel, 
   .bakameRecording #bakamePause, 
@@ -212,7 +221,19 @@
     border: 1px solid black;
     padding:10px;
   }
-
+ .bakameRecording #bakameCancel{
+   padding:10px 15px;
+ }
+ .bakameRecording #bakamePause{
+   padding: 10px 12px;
+ }
+ .bakameRecording #bakameAudio img{
+   width: 20px;
+   height: auto;
+ }
+ .bakameRecording #bakameAudio{
+   padding: 10px 15px;
+ }
   .bakameRecording #bakameAudio{
     background: #F59221;
     border: none;
@@ -276,3 +297,32 @@
 .show {
   display: block;
 }
+  @media screen and (min-width:900px){
+    .smallDev{
+      display:none;
+    }
+  }
+
+  @media screen and (max-width: 900px){
+    .chatbot{
+      display:none;
+    }
+
+    .smallDev{
+      display:block;
+      /* border: 1px solid red; */
+      width: 70px;
+      height: 70px;
+    }
+    #bakameMobile{
+      width: inherit;
+      height: inherit;
+      border: none;
+      background-color: transparent;
+      
+    }
+    #bakameMobile img{
+      width:inherit;
+      height: inherit;
+    }
+  }

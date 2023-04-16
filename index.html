@@ -7,6 +7,7 @@
     <title>Chatbot</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="./index.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 </head>
 <body>
     <div class="mainContainer">
@@ -48,9 +49,11 @@
                         <div class="bakameCounter">
                             <label id="timerLabel">0:00</label>
                         </div>
-                        <button id="bakameCancel" ><img src="./images/cancel.svg" alt="Cancel"></button>
-                        <button id="bakamePause" ><img src="./images/pause.svg" alt="Pause"></button>
-                        <button id="bakameAudio"><img src="./images/send.svg" alt="Send"></button>
+                        <!-- <div  id="bakameRecorderControls"> -->
+                            <button id="bakameCancel" ><img src="./images/cancel.svg" alt="Cancel"></button>
+                            <button id="bakamePause" ><img src="./images/pause.svg" alt="Pause"></button>
+                            <button id="bakameAudio"><img src="./images/send.svg" alt="Send"></button>
+                        <!-- </div>  -->
                     </div>
                 </div>
 
@@ -65,6 +68,7 @@
             </div>
            
         </form>
+
         <!-- <div class="responsesSection">
             <div class="questions">
                 Questions
@@ -73,6 +77,9 @@
                 Answer
             </div>
         </div> -->
+    </div>
+    <div  class="smallDev">
+        <button id="bakameMobile"><img src="./images/mobile-icon.svg" alt="Mobile icon"></button>
     </div>
     <script src="./index.js"></script>
 </body>

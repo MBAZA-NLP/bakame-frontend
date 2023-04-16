@@ -1,5 +1,6 @@
 console.log("hello i'm Bakame, your guy");
 
+const chatbot= document.querySelector(".chatbot");
 const bakame = document.querySelector("#bakame");
 const bakameSaba = document.querySelector("#bakameSaba");
 const bakameType = document.querySelector("#bakameType");
@@ -17,13 +18,23 @@ const initialContent = document.querySelector(".initialText");
 const chatContent = document.querySelector(".chatTextContent");
 const chatResponse = document.querySelector(".chatTextResponse");
 const typing = document.querySelector(".typing");
+const bakameMobile = document.querySelector("#bakameMobile");
+const smallDev = document.querySelector(".smallDev");
 var recorder = null;
+var timerCounter = null;
 
 const bakameClean = () => {
   bakame.style["display"] = "none";
   bakameSend.style["display"] = "none";
   bakameRecording.style["display"] = "none";
+  timerLabel.textContent = '';
 };
+
+const bakameCleanRecorder = () =>{
+  timerLabel.textContent = '';
+  clearInterval(timerCounter);
+
+}
 
 
 const recordAudio = () =>
@@ -56,6 +67,7 @@ const stopRecoder = async() =>{
     const audio = await recorder.stop();
     audio.play();
     console.log(audio);
+    timerLabel.textContent = '';
 }
 
 const bakameRecordCount = async () => {
@@ -65,7 +77,7 @@ const bakameRecordCount = async () => {
     recorder.start();
   })();
 
-  setInterval(function() {
+  timerCounter = setInterval(function() {
   const currentTime = new Date().getTime();
   const timeDiff = currentTime - startTime;
   
@@ -139,6 +151,7 @@ bakameMic.addEventListener("click", (event) =>{
 bakameSend.addEventListener("click", (event)=>{
     event.preventDefault();
     regexInputValidataion(bakameType.value);
+
     initialContent.style['display'] = 'none';
     content.innerHTML += `
     <div class="chatTextContent">
@@ -156,6 +169,8 @@ bakameSend.addEventListener("click", (event)=>{
 </div>
     `;
     bakameType.value = "";
+  rasaApi(bakameType.value);
+  bakameType.value = "";
 });
 
 bakameType.addEventListener("blur", ()=>{
@@ -163,7 +178,6 @@ bakameType.addEventListener("blur", ()=>{
     foldUp();
     typing.style["display"] = "none";
 });
-
 bakameType.addEventListener("focus", ()=>{
     console.log("input focused");
     foldUp();
@@ -174,12 +188,62 @@ bakameMic.addEventListener("click", (event)=>{
     event.preventDefault();
     bakameRecordCount();
 });
-
-bakameCancel.addEventListener("click", (event) =>{
-    event.preventDefault();
-    foldUp();
-    bakameMic.style["display"] = "block";
-    bakameSaba.style["display"] = "none";
-    bakameType.style["display"] = "block";
-    bakameRecording.style["display"] = "none";
+bakameCancel.addEventListener("click", (event) => {
+  event.preventDefault();
+  console.log("cancel clicked");
+  foldUp();
+  bakameMic.style["display"] = "block";
+  bakameSaba.style["display"] = "none";
+  bakameType.style["display"] = "block";
+  bakameRecording.style["display"] = "none";
+  stopRecoder();
+  bakameCleanRecorder();
 });
+
+bakameAudio.addEventListener("click", (event) =>{
+  event.preventDefault();
+  bakameCleanRecorder();
+});
+
+bakameMobile.addEventListener("click", ()=>{
+  chatbot.style["display"]="block";
+  smallDev.style["display"]="none";
+});
+
+
+// calling the api
+
+const rasaApi = (query) =>{
+
+  let rasaURL = "http://64.226.97.252:5005/webhooks/rest/webhook";
+  let reqData = {
+    sender:"user101",
+    message:query
+  }
+  const sendRequest = async () =>{
+    const { data: res } = await axios.post(rasaURL, reqData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+
+  chatContent.innerHTML = `
+    <p class="questionsContent">
+        ${query}
+    </p>`;
+    allResponse = '';
+    res.map((response)=>{
+      allResponse += `
+      <p class="questionsContent">
+      ${response.text}
+      </p>`;
+    });
+
+  chatResponse.innerHTML = allResponse;
+    console.log("--->",res);
+  }
+
+  sendRequest();
+
+}

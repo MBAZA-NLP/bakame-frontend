@@ -19,6 +19,7 @@ const chatContent = document.querySelector(".chatTextContent");
 const chatResponse = document.querySelector(".chatTextResponse");
 const bakameMobile = document.querySelector("#bakameMobile");
 const smallDev = document.querySelector(".smallDev");
+const bakameContent = document.querySelector(".content");
 
 var recorder = null;
 var timerCounter = null;
@@ -238,59 +239,65 @@ bakameMobile.addEventListener("click", () => {
 
 const rasaApi = (query) => {
 
-  let rasaURL = "http://64.226.97.252:5005/webhooks/rest/webhook";
+  let rasaURL = "http://chatbot.mbaza.org:5005/webhooks/rest/webhook";
   let user = getUser();
   let reqData = {
     sender: user,
     message: query
   }
   const sendRequest = async () => {
-    // const { data: res } = await axios.post(rasaURL, reqData, {
-    //   headers: {
-    //     "Content-Type": "application/json",
+    const { data: res } = await axios.post(rasaURL, reqData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // res = [
+    //   {
+    //     recipient_id: "user",
+    //     text: "Murakaza neza kuri Bakame"
     //   },
-    // });
-    res = [
-      {
-        recipient_id: "user",
-        text: "Murakaza neza kuri Bakame"
-      },
-      {
-        recipient_id: "user",
-        image: "https://rtn.rw/wp-content/uploads/2019/07/irembo-300x83.png"
-      },
-      {
-        recipient_id: "user",
-        text: "murashaka gukora ku wuhe munsi",
-        buttons: [
-          {
-            title: "2023-01-23",
-            payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-01-23\"}"
-          },
-          {
-            title: "2023-02-01",
-            payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-01\"}"
-          },
-          {
-            title: "2023-02-15",
-            payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-15\"}"
-          }
-        ]
-      }
-    ]
+    //   {
+    //     recipient_id: "user",
+    //     image: "https://rtn.rw/wp-content/uploads/2019/07/irembo-300x83.png"
+    //   },
+    //   {
+    //     recipient_id: "user",
+    //     text: "murashaka gukora ku wuhe munsi",
+    //     buttons: [
+    //       {
+    //         title: "2023-01-23",
+    //         payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-01-23\"}"
+    //       },
+    //       {
+    //         title: "2023-02-01",
+    //         payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-01\"}"
+    //       },
+    //       {
+    //         title: "2023-02-15",
+    //         payload: "/permanent_driving_license_date{\"permanent_driving_license_date_slot\": \"2023-02-15\"}"
+    //       }
+    //     ]
+    //   }
+    // ]
+    let divReq = createDomRequestTree(query);
+    console.log("divReq",divReq);
+    bakameContent.appendChild(divReq);
+    // chatContent.innerHTML = `
+    //   <p class="questionsContent">
+    //       ${query}
+    //   </p>`;
 
-
-    chatContent.innerHTML = `
-      <p class="questionsContent">
-          ${query}
-      </p>`;
-
+    const sendButtonRequest = (title,pld)=>{
+      
+      console.log("called ",title,pld);
+    }
 
     //responses
     allResponse = '';
-    let div = createDiv(); // this div will hold the buttons
+    let divButtons = createDiv(); // this div will hold the buttons
 
     res.map((response) => {
+      console.log("reespo", response);
 
       let text = response.text || "";
       // let image = response.image || "";
@@ -298,24 +305,34 @@ const rasaApi = (query) => {
 
       buttons.length && buttons.map((btn) => {
         let button = document.createElement('button');
-        button.class="BakameBtn";
+        button.setAttribute("class","BakameBtn");
         button.payload=btn.payload;
+        button.onclick=`sendButtonRequest(${btn.title},${btn.payload})`
         //onclick the button should call a function to send another req with the payload provided
         button.innerHTML = btn.title;
-        div.appendChild(button);
+        divButtons.appendChild(button);
       });
+
+
       //append the button's div into the response div
 
       allResponse += `
         <p class="questionsContent">
         ${response.text}
         </p>`;
+      
+      let divRes = createDomResponseTree(response.text);
+      bakameContent.appendChild(divRes);
+      // let 
+      if(response.buttons){
+        divRes.appendChild(divButtons);
+      }
       //on the above allResponse, instead it should be a content,
       // which will append the children in chronological order
       //both for the request then the response
     });
 
-    chatResponse.innerHTML = allResponse;
+    // chatResponse.innerHTML = allResponse;
     // after all, no more of chatResponse or allResponse
     // then build a function to handle when a user clicks on a button
     console.log("--->", res);
@@ -334,11 +351,11 @@ const createDiv = () =>{
 // this function will receive the request data
 // it should create  the request div and its children included and return it
 
-const createDomRequestTree = (req)=>{
+function createDomRequestTree(req){
   let chatTextContent = document.createElement('div');
-  chatTextContent.class = "chatTextContent"
+  chatTextContent.setAttribute("class","chatTextContent");
   const questionsContent= document.createElement("p");
-  questionsContent.class ="questionsContent";
+  questionsContent.setAttribute("class","questionsContent");
   questionsContent.innerHTML=req;
   chatTextContent.appendChild(questionsContent);
 
@@ -350,9 +367,9 @@ const createDomRequestTree = (req)=>{
 // it should create the response div and its children included and return it
 const createDomResponseTree = (res)=>{
   let chatTextResponse = document.createElement('div');
-  chatTextResponse.class= "chatTextResponse";
+  chatTextResponse.setAttribute("class","chatTextResponse");
   const questionsContent = document.createElement('p');
-  questionsContent.class ="questionsContent";
+  questionsContent.setAttribute("class","questionsContent");
   questionsContent.innerHTML=res;
   chatTextResponse.appendChild(questionsContent);
 
